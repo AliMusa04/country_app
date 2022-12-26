@@ -6,16 +6,23 @@ import "./home.css";
 const Home = () => {
   let body = document.getElementsByTagName("body")[0];
 
-  const [countryData, setCountry] = useState([]);
-  const [inp, SetInp] = useState();
-  const [loading, setLoading] = useState(true);
+  const [countryData, setCountry] = useState([]); //STATE FOR ALL CARDS 
+console.log(countryData);
+  const [loading, setLoading] = useState(true); //LOADING PAGE
 
-  useEffect(() => {
+
+  const [inp, SetInp] = useState(""); //FOR INPUT
+
+  console.log(inp);
+
+  useEffect(() => { //FOR CARDS
     axios.get("https://restcountries.com/v3.1/all").then((item) => {
       setCountry(item.data);
       setLoading(false);
     });
-  }, [SetInp]);
+  }, []);
+
+
 
   return (
     <>
@@ -44,7 +51,7 @@ const Home = () => {
               <input
                 type="text"
                 placeholder="Search for country..."
-                onChange={(e) => SetInp(e.target.value)}
+                onChange={(e) => SetInp(e.target.value)} //INPUT TARGET
               />
             </div>
 
@@ -67,33 +74,44 @@ const Home = () => {
           </div>
 
           <div className="cards_contanier">
-            {countryData
-              .filter((country) =>
-                country.name.common.toLowerCase().includes(inp)
-              )
-              .map((country) => {
-                return (
-                  <Link
-                    key={country.name.common}
-                    to={`/about/${country.name.common}`}>
-                    <div key={country.name.common} className="card" id="cardId">
-                      <img src={`${country.flags.png}`} alt="" />
-                      <div id="card_content" className="card_text">
-                        <h2>{country.name.common}</h2>
-                        <p>
-                          <span>Population:</span> {country.population}
-                        </p>
-                        <p>
-                          <span>Region:</span> {country.region}
-                        </p>
-                        <p>
-                          <span>Capital:</span> {country.capital}
-                        </p>
-                      </div>
-                    </div>
-                  </Link>
-                );
-              })}
+            {/* { {filteredData
+            .filter((country) =>
+                 country.name.common.toLowerCase().includes(inp)
+               )} } */}
+
+              {countryData.filter((fill)=>{
+                if(inp === ""){
+                  return fill
+                }else if(fill.name?.common.toLowerCase().includes(inp.toLowerCase())) {
+                  return fill
+                }
+
+              })
+
+                .map((country) => {
+                 return (
+                   <Link
+                     key={country.name.common}
+                     to={`/about/${country.name.common}`}>
+                     <div key={country.name.common} className="card" id="cardId">
+                       <img src={`${country.flags.png}`} alt="" />
+                       <div id="card_content" className="card_text">
+                         <h2>{country.name.common}</h2>
+                         <p>
+                           <span>Population:</span> {country.population}
+                         </p>
+                         <p>
+                           <span>Region:</span> {country.region}
+                         </p>
+                         <p>
+                           <span>Capital:</span> {country.capital}
+                         </p>
+                       </div>
+                     </div>
+                   </Link>
+                 );
+               })
+              }
 
             {/* <div className="card">
                <img
