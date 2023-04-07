@@ -1,28 +1,24 @@
 import axios from "axios";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import "./home.css";
 
 const Home = () => {
-  let body = document.getElementsByTagName("body")[0];
-
-  const [countryData, setCountry] = useState([]); //STATE FOR ALL CARDS 
-console.log(countryData);
+  const [countryData, setCountry] = useState([]); //STATE FOR ALL CARDS
+  console.log(countryData);
   const [loading, setLoading] = useState(true); //LOADING PAGE
-
 
   const [inp, SetInp] = useState(""); //FOR INPUT
 
   console.log(inp);
 
-  useEffect(() => { //FOR CARDS
+  useEffect(() => {
+    //FOR CARDS
     axios.get("https://restcountries.com/v3.1/all").then((item) => {
       setCountry(item.data);
       setLoading(false);
     });
   }, []);
-
-
 
   return (
     <>
@@ -55,7 +51,7 @@ console.log(countryData);
               />
             </div>
 
-            <div className="all_content_top_filter">
+            {/* <div className="all_content_top_filter">
               <div className="all_content_top_filter_text">
                 Filter by region
               </div>
@@ -70,7 +66,7 @@ console.log(countryData);
                   <path d="M4.516 7.548c0.436-0.446 1.043-0.481 1.576 0l3.908 3.747 3.908-3.747c0.533-0.481 1.141-0.446 1.574 0 0.436 0.445 0.408 1.197 0 1.615-0.406 0.418-4.695 4.502-4.695 4.502-0.217 0.223-0.502 0.335-0.787 0.335s-0.57-0.112-0.789-0.335c0 0-4.287-4.084-4.695-4.502s-0.436-1.17 0-1.615z"></path>
                 </svg>
               </div>
-            </div>
+            </div> */}
           </div>
 
           <div className="cards_contanier">
@@ -79,39 +75,40 @@ console.log(countryData);
                  country.name.common.toLowerCase().includes(inp)
                )} } */}
 
-              {countryData.filter((fill)=>{
-                if(inp === ""){
-                  return fill
-                }else if(fill.name?.common.toLowerCase().includes(inp.toLowerCase())) {
-                  return fill
+            {countryData
+              .filter((fill) => {
+                if (inp === "") {
+                  return fill;
+                } else if (
+                  fill.name?.common.toLowerCase().includes(inp.toLowerCase())
+                ) {
+                  return fill;
                 }
-
               })
 
-                .map((country) => {
-                 return (
-                   <Link
-                     key={country.name.common}
-                     to={`/about/${country.name.common}`}>
-                     <div key={country.name.common} className="card" id="cardId">
-                       <img src={`${country.flags.png}`} alt="" />
-                       <div id="card_content" className="card_text">
-                         <h2>{country.name.common}</h2>
-                         <p>
-                           <span>Population:</span> {country.population}
-                         </p>
-                         <p>
-                           <span>Region:</span> {country.region}
-                         </p>
-                         <p>
-                           <span>Capital:</span> {country.capital}
-                         </p>
-                       </div>
-                     </div>
-                   </Link>
-                 );
-               })
-              }
+              .map((country) => {
+                return (
+                  <Link
+                    key={country.name.common}
+                    to={`/about/${country.name.common}`}>
+                    <div key={country.name.common} className="card" id="cardId">
+                      <img src={`${country.flags.png}`} alt="" />
+                      <div id="card_content" className="card_text">
+                        <h2>{country.name.common}</h2>
+                        <p>
+                          <span>Population:</span> {country.population}
+                        </p>
+                        <p>
+                          <span>Region:</span> {country.region}
+                        </p>
+                        <p>
+                          <span>Capital:</span> {country.capital}
+                        </p>
+                      </div>
+                    </div>
+                  </Link>
+                );
+              })}
 
             {/* <div className="card">
                <img
